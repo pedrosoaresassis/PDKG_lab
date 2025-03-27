@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: debug_password
-      POSTGRES_DB: dhjangoapitemplate_db
+      POSTGRES_DB: djangoapitemplate_db
     ports:
       - "5432:5432"
     volumes:
