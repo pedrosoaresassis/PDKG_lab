@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'users',
+    'products',
 ]
 
 # sem isso o auth do login para geração do token num funfa V -v 
