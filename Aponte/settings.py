@@ -4,6 +4,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-+5adaa5_@tkec+*d@#t6@5fdt(_8^_-27kqa1a!y_6&7t@lep4'
 
+JWT_SECRET_KEY = 'Rt54O6awyQbTNA1RKi7ma9QHsSFOMchrwx9PVujf5qYHMXyGYJVsHmBKMslylfN6'
+
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -26,14 +28,18 @@ INSTALLED_APPS = [
 # sem isso o auth do login para geração do token num funfa V -v 
 AUTH_USER_MODEL = "users.User"
 
-# shizu - add isso pra conseguir fazer auth com o token enviado pelo login
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication', 
+    ],
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.AllowAny",
+        "rest_framework.permissions.IsAdminUser",
     ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    )
 }
 
 
@@ -48,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'Aponte.middleware.TokenAuthMiddleware',
 ]
 
 AUTHENTICATIONS_BACKENDS = [
