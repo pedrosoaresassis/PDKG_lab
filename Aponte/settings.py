@@ -8,6 +8,8 @@ JWT_SECRET_KEY = 'Rt54O6awyQbTNA1RKi7ma9QHsSFOMchrwx9PVujf5qYHMXyGYJVsHmBKMslylf
 
 DEBUG = True
 
+
+
 ALLOWED_HOSTS = []
 
 
