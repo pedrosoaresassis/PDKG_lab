@@ -8,11 +8,7 @@ JWT_SECRET_KEY = 'Rt54O6awyQbTNA1RKi7ma9QHsSFOMchrwx9PVujf5qYHMXyGYJVsHmBKMslylf
 
 DEBUG = True
 
-
-
 ALLOWED_HOSTS = []
-
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -43,10 +39,6 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAdminUser",
     ),
 }
-
-
-
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -90,9 +82,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
