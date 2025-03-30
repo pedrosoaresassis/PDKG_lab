@@ -1,84 +1,152 @@
-# Template de REST API - CodeIsArt
+# Template de API REST - Code&Art
 
-Sempre que fizer a implementação de uma funcionalidade genérica de REST API, adicionar na lista abaixo.
+Um modelo completo para construção de APIs REST robustas usando Django e Django REST Framework. Este template fornece uma base sólida com funcionalidades pré-construídas para requisitos comuns de API.
 
-## IMPORTANTE
-Sempre que for implementar uma nova funcionalidade, criar nova branch e criar Pull Request para review.
+## Sobre Este Projeto
+
+Este template serve como ponto de partida para o desenvolvimento de APIs REST com Django. Inclui autenticação de usuário pré-configurada, gerenciamento de produtos e segue as melhores práticas para implementação do Django REST Framework.
+
+## Tecnologias Utilizadas
+
+- Django
+- Django REST Framework
+- Autenticação por Token
+- SQLite (padrão, pode ser configurado para outros bancos de dados)
+- Princípios de design RESTful API
+
+## Começando
+
+### Pré-requisitos
+- Python 3.8+
+- pip
+
+### Instalação
+
+1. Clone o repositório
+```bash
+git clone https://github.com/CodeIsArtStudio/djangoapitemplate.git
+cd djangoapitemplate
+```
+
+2. Crie um ambiente virtual
+```bash
+python -m venv venv
+source venv/bin/activate  # No Windows: venv\Scripts\activate
+```
+
+3. Instale as dependências
+```bash
+pip install -r requirements.txt
+```
+
+4. Execute as migrações
+```bash
+python manage.py migrate
+```
+
+5. Inicie o servidor de desenvolvimento
+```bash
+python manage.py runserver
+```
+
+A API estará disponível em http://127.0.0.1:8000/
+
+## Estrutura do Projeto
+
+```
+djangoapitemplate/
+├── users/                  # App de autenticação de usuários
+├── products/               # App de gerenciamento de produtos
+├── core/                   # Funcionalidades principais
+├── manage.py               # Script de gerenciamento do Django
+└── requirements.txt        # Dependências do projeto
+```
 
 ## Funcionalidades:
 
+Sempre que fizer a implementação de uma funcionalidade genérica de REST API, adicionar na lista abaixo.
 
 ### USER --------------------------------------------------------------------------------------------------------------
 
-### URL: http://127.0.0.1:8000/users/CRUD/
+#### URL: http://127.0.0.1:8000/users/CRUD/
 
-### register:
-    O usuario se registra com email, username e pass, colocando seus dados dentro do banco de dados
+#### Register:
+O usuário se registra com email, username e password, colocando seus dados dentro do banco de dados
 
-    {
+```json
+{
     "username": "shizu",
     "email": "shizu@gmail.com",
     "password": "banana@321_"
-    }
+}
+```
 
-### login:
-    Com isso iremos direcionalo para parte de login, quando ocorrer o envio do username e password o backend analisa se "banana" Hasheado == DB.pass:"aasdasd2a$sd2asd2$2asd".
-    se o login der certo é enviado um token para ele. Fazendo com que ele possa Editar e excluir a conta.
+#### Login:
+Com isso iremos direcioná-lo para parte de login, quando ocorrer o envio do username e password o backend analisa se "banana" Hasheado == DB.pass:"aasdasd2a$sd2asd2$2asd".
+Se o login der certo é enviado um token para ele. Fazendo com que ele possa editar e excluir a conta.
 
-    {
+```json
+{
     "username": "shizu",
     "password": "banana@321_"
-    }
+}
+```
 
-    token = 116e7b552ab44e443b7723c99c70bb0806e3863f
+Resposta:
+```
+token = 116e7b552ab44e443b7723c99c70bb0806e3863f
+```
 
-### update (token):
-    Com o token em mão o usuario passa pela verificação da rota UPDATE e DELETE.
+#### Update (token necessário):
+Com o token em mãos o usuário passa pela verificação da rota UPDATE e DELETE.
 
-    {
-        "username": "shizu",
-        "email": "test@gmail.com",
-        "password": "banana@321_",
-        "new_password": "banana@_321"
-    }
+```json
+{
+    "username": "shizu",
+    "email": "test@gmail.com",
+    "password": "banana@321_",
+    "new_password": "banana@_321"
+}
+```
 
-### delete (token):
-    {
-        "username": "shizu",
-        "password": "banana@321_",
-    }
+#### Delete (token necessário):
+```json
+{
+    "username": "shizu",
+    "password": "banana@321_"
+}
+```
 
+### PRODUCTS -----------------------------------------------------------------------------------------------------------
 
-## PRODUCTS -----------------------------------------------------------------------------------------------------------
+#### URL: http://127.0.0.1:8000/products/products/
+Essa rota não precisa de nada para validar, apenas o token. 
+Adicionar futuramente a validação de quem realmente está alterando o DB
 
-### URL: http://127.0.0.1:8000/products/products/
-Essa rota n precisa de nada pra validar, apenas o token. 
-Adicionar futuramente a validação de quem realmente esta auterando o DB
+##### 1. Obter todos os produtos (GET)
+```
+http://127.0.0.1:8000/products/products/
+```
 
-    ____________________________________________
-    1. Obter todos os produtos (GET)
+##### 2. Obter detalhes de um produto (GET por ID)
+```
+http://127.0.0.1:8000/products/products/{id}/
+```
 
-    http://127.0.0.1:8000/products/products/
-    ____________________________________________
+##### 3. Atualizar um produto (PUT)
+```
+http://127.0.0.1:8000/products/products/{id}/
+```
 
-    2. Obter detalhes de um produto (GET por ID)
+##### 4. Excluir um produto (DELETE)
+```
+http://127.0.0.1:8000/products/products/{id}/
+```
 
-    http://127.0.0.1:8000/products/products/{id}/
-    ____________________________________________
+#### MODELO DE REQUISIÇÃO JSON
 
-    3. Atualizar um produto (PUT)
-
-    http://127.0.0.1:8000/products/products/{id}/
-    ____________________________________________
-
-    4. Excluir um produto (DELETE)
-
-    http://127.0.0.1:8000/products/products/{id}/
-    ____________________________________________
-
-### MODEL JSON REQUEST
-
-    {
+```json
+{
     "name": "Produto 1",
     "description": "Descrição do Produto 1",
     "category": "Tecnologia",
@@ -87,9 +155,34 @@ Adicionar futuramente a validação de quem realmente esta auterando o DB
     "image_url": "https://exemplo.com/imagens/produto1.jpg",
     "tags": ["promoção"],
     "brand": "Marca X"
-    }
+}
+```
 
+## Autenticação da API
 
+Esta API usa autenticação baseada em token. Para acessar endpoints protegidos:
 
+1. Obtenha um token através do endpoint de login
+2. Inclua o token no cabeçalho Authorization das suas requisições:
+   ```
+   Authorization: Token 116e7b552ab44e443b7723c99c70bb0806e3863f
+   ```
 
+## Tratamento de Erros
 
+A API retorna códigos de status HTTP padrão:
+
+- 200: Sucesso
+- 201: Criado
+- 400: Requisição Inválida
+- 401: Não Autorizado
+- 403: Proibido
+
+As respostas de erro incluem uma mensagem explicando o erro.
+
+## Contribuindo
+
+1. Crie uma nova branch para sua funcionalidade
+2. Implemente suas alterações
+3. Crie um Pull Request para revisão
+4. Certifique-se de que todos os testes passam antes de enviar
