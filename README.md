@@ -8,11 +8,12 @@ Este template serve como ponto de partida para o desenvolvimento de APIs REST co
 
 ## Tecnologias Utilizadas
 
-- Django
-- Django REST Framework
+- Django 5.1.7
+- Django REST Framework 3.16.0
 - Autenticação por Token
 - SQLite (padrão, pode ser configurado para outros bancos de dados)
 - Princípios de design RESTful API
+- djangorestframework-simplejwt 5.2.1
 
 ## Começando
 
