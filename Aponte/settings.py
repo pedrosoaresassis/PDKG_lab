@@ -18,9 +18,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'rest_framework.authtoken',
     'users',
     'products',
+    'payments'
 ]
 
 # sem isso o auth do login para geração do token num funfa V -v 
