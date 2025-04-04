@@ -1,15 +1,31 @@
+import os
+from dotenv import load_dotenv
 from pathlib import Path
+from django.core.exceptions import ImproperlyConfigured
 
+
+dotenv_path = os.path.join(os.path.dirname(__file__), "../.env")
+load_dotenv(dotenv_path)
+
+
+
+
+# Base do projeto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-+5adaa5_@tkec+*d@#t6@5fdt(_8^_-27kqa1a!y_6&7t@lep4'
+# Função para forçar variáveis obrigatórias
 
-JWT_SECRET_KEY = 'Rt54O6awyQbTNA1RKi7ma9QHsSFOMchrwx9PVujf5qYHMXyGYJVsHmBKMslylfN6'
 
-DEBUG = True
+# Variáveis críticas
+SECRET_KEY = os.getenv('SECRET_KEY', 'sua-secret-key-desenvolvimento')
 
-ALLOWED_HOSTS = []
+JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', SECRET_KEY)
 
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
+
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+
+# Apps instalados
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -22,26 +38,26 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'users',
     'products',
-    'payments'
+    'payments',
 ]
 
-# sem isso o auth do login para geração do token num funfa V -v 
+# Custom user model
 AUTH_USER_MODEL = "users.User"
 
+# Autenticação REST
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication', 
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    "DEFAULT_PERMISSION_CLASSES": (
-        "rest_framework.permissions.IsAuthenticated",
-        "rest_framework.permissions.AllowAny",
-        "rest_framework.permissions.IsAdminUser",
-    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
 
+# Middlewares
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -53,7 +69,7 @@ MIDDLEWARE = [
     'Aponte.middleware.TokenAuthMiddleware',
 ]
 
-AUTHENTICATIONS_BACKENDS = [
+AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -77,45 +93,34 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Aponte.wsgi.application'
 
-
+# Banco de dados
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.getenv('DB_ENGINE'),
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
+# Validação de senhas
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+# Localização
+LANGUAGE_CODE = os.getenv('LANGUAGE_CODE', 'en-us')
+TIME_ZONE = os.getenv('TIME_ZONE', 'UTC')
 
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
+# Arquivos estáticos
 STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

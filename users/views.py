@@ -59,12 +59,16 @@ class LoginView(APIView):
                 'exp': datetime.utcnow() + timedelta(hours=24)
             }
             
-            print(payload)
-
             token = jwt.encode(payload, settings.JWT_SECRET_KEY, algorithm='HS256')
+            
+            # (opcional) ver o payload decodificado:
+            # decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=["HS256"])
+            # print(decoded)
+
             return Response({'token': token})
 
         return Response({'error': 'Credenciais inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
+
 # =====================================================================================
 class UpdateUserView(APIView):
     permission_classes = [IsAuthenticated] 
